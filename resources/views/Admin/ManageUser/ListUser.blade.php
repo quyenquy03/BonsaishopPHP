@@ -13,15 +13,9 @@
                 <div class="list-filter">
                     <span class="form-label d-block mb-1 mt-3">Lọc theo quyền người dùng</span>
                     <select class="form-control" id="ChooseRoles"  style="width: 250px" name="RoleID">
-                        <option>Admin</option>
-                        <option>User</option>
-                    </select>
-                </div>
-                <div class="list-filter mx-3">
-                    <span class="form-label d-block mb-1 mt-3">Lọc theo trạng thái</span>
-                    <select class="form-control" id="ChooseRoles"  style="width: 250px" name="RoleID">
-                        <option>Admin</option>
-                        <option>User</option>
+                        <option selected value="0">Chọn tất cả</option>
+                        <option value="1">Quản trị viên</option>
+                        <option value="2">Người dùng hệ thống</option>
                     </select>
                 </div>
             </div>
@@ -48,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <@php
+                    @php
                         $i = 1;
                     @endphp
                     @foreach($listUser as $key => $item)
@@ -195,43 +189,25 @@
             })
             $("#ChooseRoles").on("change", function () {
                 roleID = $("#ChooseRoles").children(":selected").attr("value");
-                ActiveStatus = $("#ChooseIsAcctive").children(":selected").attr("value");
-                roleID = parseFloat(roleID);
-                SelectChangeHandle(roleID, ActiveStatus);
+                // roleID = parseFloat(roleID);
+                SelectChangeHandle(roleID);
             })
-            $("#ChooseIsAcctive").on("change", function () {
-                roleID = $("#ChooseRoles").children(":selected").attr("value");
-                ActiveStatus = $("#ChooseIsAcctive").children(":selected").attr("value");
-                roleID = parseFloat(roleID);
-                SelectChangeHandle(roleID, ActiveStatus);
-            })
-            function SelectChangeHandle(roleID, ActiveStatus) {
+            function SelectChangeHandle(roleID) {
                 $("#ChooseRoles option").removeAttr("selected");
                 $("#ChooseRoles > [value=" + roleID + "]").attr("selected", "true");
-
-                $("#ChooseIsAcctive option").removeAttr("selected");
-                $("#ChooseIsAcctive > [value=" + ActiveStatus + "]").attr("selected", "true");
-
-                $.ajax({
-                    url: "/Admin/Account/Filter",
-                    datatype: "json",
-                    type: "GET",
-                    data: {
-                        "RoleID": roleID,
-                        "ActiveStatus" : ActiveStatus
-                    },
-                    async: true,
-                    success: function (results) {
-                        if (results.status == 1) {
-                            window.location.href = results.linkURL;
-                        }
-                    },
-                    error: function (xhr) {
-                        alert("error")
-                    }
-                })
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const page = urlParams.get('page')
+                window.location.href =  (window.location.pathname) + (`?page=${page}&role=${roleID}`);
             }
-            
+            const loadSelect = () => {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const role = urlParams.get('role')
+                $("#ChooseRoles option").removeAttr("selected");
+                $("#ChooseRoles > [value=" + role + "]").attr("selected", "true");
+            }
+            loadSelect();
         });
         
     </script>

@@ -8,8 +8,13 @@ use Redirect;
 
 class UserController extends Controller
 {
-     public function index() {
-          $listUser = DB::table('users')->OrderBy('UserID')->simplePaginate(5)->withQueryString();
+     public function index(Request $request) {
+          $role = $request->get("role");
+          $listUser = DB::table('users')->OrderBy('UserID');
+          if($role == 1 || $role == 2){
+               $listUser = $listUser->Where('RoleID', $role);
+          }
+          $listUser = $listUser->simplePaginate(5);
           return view('Admin.ManageUser.ListUser')->with(compact('listUser'));
      }
      public function CreateUser() {

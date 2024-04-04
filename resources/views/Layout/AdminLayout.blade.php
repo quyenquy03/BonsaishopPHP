@@ -307,17 +307,17 @@
         </a>
         <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a asp-action="ListCatePost" asp-controller="Category" asp-area="Admin">
+                <a href="{{URL('/admin/list-post-cate')}}">
                     <i class="bi bi-circle"></i><span>Danh mục bài viết</span>
                 </a>
             </li>
             <li>
-                <a asp-action="ListCatePro" asp-controller="Category" asp-area="Admin">
+                <a href="{{URL('/admin/list-product-cate')}}">
                     <i class="bi bi-circle"></i><span>Danh mục sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a asp-action="CreateNewCate" asp-controller="Category" asp-area="Admin">
+                <a href="{{URL('/admin/create-category')}}">
                     <i class="bi bi-circle"></i><span>Thêm mới danh mục</span>
                 </a>
             </li>
