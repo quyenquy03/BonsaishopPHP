@@ -17,14 +17,11 @@
                             <div class="col-1">
                                 <div class="table-cell"></div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-4">
                                 <div class="table-cell"><span>Tên danh mục</span></div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-4">
                                 <div class="table-cell"><span>Mô tả danh mục</span></div>
-                            </div>
-                            <div class="col-2">
-                                <div class="table-cell text-center"><span>Danh mục con</span></div>
                             </div>
                             <div class="col-1">
                                 <div class="table-cell text-center"><span>Hiển thị</span></div>
@@ -33,100 +30,80 @@
                                 <div class="table-cell text-center"><span>Chức năng</span></div>
                             </div>
                         </div>
-                        {{-- @foreach (var item in Model.Where(m => m.Levels == 1))
-                        {
-                            var target = "#" + item.Alias;
-                            var subitem = Model.Where(m => m.ParentCateId == item.CategoryId).ToList();
+                        @foreach($listCategory as $key => $category)
+                            @php
+                                $target = '#row-'.$category->CategoryID;
+                            @endphp
                             <div class="row table-item align-items-center">
                                 <div class="col-1">
                                     <div class="table-cell">
-                                        <a class="nav-link collapsed" data-bs-target="@target" data-bs-toggle="collapse" href="#">
+                                        <a class="nav-link collapsed" data-bs-target="{{$target}}" data-bs-toggle="collapse" href="#">
                                             <i class="bi bi-chevron-right table-nav-icon ms-auto"></i>
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="table-cell"><span>@item.CategoryName</span></div>
+                                <div class="col-4">
+                                    <div class="table-cell"><span>{{$category->CategoryName}}</span></div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="table-cell truncate-text truncate-4-line"><span>@item.Description</span></div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="table-cell text-center"><span>@subitem.Count</span></div>
+                                <div class="col-4">
+                                    <div class="table-cell truncate-text truncate-4-line"><span>{{$category->Description}}</span></div>
                                 </div>
                                 <div class="col-1">
-                                    @*<div class="table-cell text-center"><span>@item.IsActive</span></div>*@
                                     <div class="table-cell text-center">
                                         <div class="switch m-r-10">
-                                            @if (item.IsActive == true)
-                                            {
-                                                <input type="checkbox" class="ChangeBestSeller" id="Active-@item.CategoryId" checked>
-                                            }
-                                            else
-                                            {
-                                                <input type="checkbox" class="ChangeBestSeller" id="Active-@item.CategoryId">
-                                            }
-                                            <label class="ChangeActiveStatusButton" data-id="@item.CategoryId" data-currentvalue="@item.IsActive"></label>
+                                            @if ($category->IsActive == true)
+                                                <input type="checkbox" class="ChangeBestSeller" id="Active-{{$category->CategoryID}}" checked>
+                                            @else
+                                                <input type="checkbox" class="ChangeBestSeller" id="Active-{{$category->CategoryID}}">
+                                            @endif
+                                            <label class="ChangeActiveStatusButton" data-id="{{$category->CategoryID}}" data-currentvalue="{{$category->IsActive}}"></label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="table-cell text-center">
-                                        <a class="btn btn-warning" asp-action="EditCate" asp-controller="Category" asp-route-id="@item.CategoryId"><i class="bi bi-pencil-fill"></i></a>
-                                        <button class="btn btn-danger" onclick="DisplayDeleteModal(@item.CategoryId)"><i class="bi bi-trash-fill"></i></button>
+                                        <a class="btn btn-warning"  href="{{URL("/admin/edit-category/$category->CategoryID")}}"><i class="bi bi-pencil-fill"></i></a>
+                                        <button class="btn btn-danger" onclick="DisplayDeleteModal({{$category->CategoryID}})"><i class="bi bi-trash-fill"></i></button>
                                     </div>
                                 </div>
                             </div>
-    
-                            <div id="@item.Alias" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                                @if(subitem.Count > 0)
-                                {
-                                    @foreach (var SItem in subitem)
-                                    {
+                            <div id="row-{{$category->CategoryID}}" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                @foreach ($listSubCate as $subKey => $subValue)
+                                    @if($subValue->ParentCateID == $category->CategoryID) 
                                         <div class="row table-item align-items-center">
                                             <div class="col-1 ">
                                                 <div class="table-cell">
                                                 </div>
                                             </div>
-                                            <div class="col-3">
-                                                <div class="table-cell"><span>@SItem.CategoryName</span></div>
+                                            <div class="col-4">
+                                                <div class="table-cell"><span>{{$subValue->CategoryName}}</span></div>
                                             </div>
-                                            <div class="col-3">
-                                                <div class="table-cell"><span>@SItem.Description</span></div>
+                                            <div class="col-4">
+                                                <div class="table-cell"><span>{{$subValue->Description}}</span></div>
                                             </div>
-                                            <div class="col-2">
-                                                <div class="table-cell text-center"><span>0</span></div>
-                                            </div>
-                                            
                                             <div class="col-1">
-                                                @*<div class="table-cell text-center"><span>@SItem.IsActive</span></div>*@
                                                 <div class="table-cell text-center">
                                                     <div class="switch m-r-10">
-                                                        @if (item.IsActive == true)
-                                                        {
-                                                            <input type="checkbox" class="ChangeBestSeller" id="Active-@SItem.CategoryId" checked>
-                                                        }
-                                                        else
-                                                        {
-                                                            <input type="checkbox" class="ChangeBestSeller" id="Active-@SItem.CategoryId">
-                                                        }
-                                                        <label class="ChangeActiveStatusButton" data-id="@SItem.CategoryId" data-currentvalue="@SItem.IsActive"></label>
+                                                        @if ($subValue->IsActive == true)
+                                                            <input type="checkbox" class="ChangeBestSeller" id="Active-{{$subValue->CategoryID}}" checked>
+                                                        @else
+                                                            <input type="checkbox" class="ChangeBestSeller" id="Active-{{$subValue->CategoryID}}">
+                                                        @endif
+                                                        <label class="ChangeActiveStatusButton" data-id="{{$subValue->CategoryID}}" data-currentvalue="{{$subValue->IsActive}}"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
                                                 <div class="table-cell text-center">
-                                                    <a class="btn btn-warning" asp-action="EditCate" asp-controller="Category" asp-route-id="@SItem.CategoryId"><i class="bi bi-pencil-fill"></i></a>
-                                                    <button class="btn btn-danger" onclick="DisplayDeleteModal(@SItem.CategoryId)"><i class="bi bi-trash-fill"></i></button>
+                                                    <a class="btn btn-warning" href="{{URL("/admin/edit-category/$subValue->CategoryID")}}"><i class="bi bi-pencil-fill"></i></a>
+                                                    <button class="btn btn-danger" data-id="{{$subValue->CategoryID}}" onclick="DisplayDeleteModal({{$subValue->CategoryID}})"><i class="bi bi-trash-fill"></i></button>
                                                 </div>
                                             </div>
                                         </div>
-                                    }
-                                }
-                                
+                                    @endif
+                                @endforeach
                             </div>
-                        } --}}
-                        
+                        @endforeach
                     </div>
     
                 </div>
@@ -193,11 +170,10 @@
     $(document).ready(function () {
         $("#btnConfirmDelete").on("click", function () {
             let IdToDelete = $("#IdToDelete").val();
-            let UrlHandle = "/Admin/Category/DeletePernament";
-
+            let UrlHandle = "{{URL('/admin/delete-category')}}";
             $.ajax({
                 url: UrlHandle,
-                type: "Post",
+                type: "GET",
                 data: {
                     IdToDelete: IdToDelete,
                 },
@@ -214,7 +190,7 @@
         $(".ChangeActiveStatusButton").on("click", function () {
             var IdToUpdate = $(this).data("id");
             $.ajax({
-                url: "/Admin/Category/UpdateActiveStatus",
+                url: "{{URL('/admin/change-category-status')}}",
                 type: "Get",
                 data: {
                     IdToUpdate: IdToUpdate,
@@ -223,16 +199,16 @@
                     if (data.status == 0) {
                         if (data.currentValue == true) {
                             $('#Active-' + IdToUpdate).prop('checked', true);
-                            toastr.success("Đã cho danh mục hiển thị");
                         } else {
                             $('#Active-' + IdToUpdate).prop('checked', false);
-                            toastr.success("Đã cho danh mục không hiển thị");
                         }
+                        toastr.success(data.message);
                     } else {
                         toastr.success("Đang bị lỗi, vui lòng quay lại sau");
                     }
                 },
             })
+            
         });
     });
 

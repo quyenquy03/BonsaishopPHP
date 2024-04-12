@@ -7,30 +7,25 @@ use DB;
 use Redirect;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class BlogController extends Controller
 {
-    public function ListPostCate() {
-        $listCategory = DB::table('categories')->Where('CategoryType', 1)->Where('Levels', 1)->get();
-        $listSubCate  =DB::table('categories')->Where('CategoryType', 1)->Where('Levels', 2)->get();
-        return view('Admin.ManageCategory.ListPostCate')->with(compact('listCategory', 'listSubCate'));
+    public function ListBlog() {
+        $ListBlog = DB::table('blogs as b')->join('categories as c', 'c.CategoryID', '=', 'b.CategoryID')->Where('IsDeleted', false)->get();
+        return view('Admin.ManageBlog.ListBlog')->with(compact('ListBlog'));
     }
-    public function ListProductCate() {
-        $listCategory = DB::table('categories')->Where('CategoryType', 2)->Where('Levels', 1)->get();
-        $listSubCate  =DB::table('categories')->Where('CategoryType', 2)->Where('Levels', 2)->get();
-        return view('Admin.ManageCategory.ListProductCate')->with(compact('listCategory', 'listSubCate'));
+    
+    public function CreateBlog() {
+        return view('Admin.ManageBlog.CreateBlog');
     }
-    public function CreateCategory() {
-        return view('Admin.ManageCategory.CreateCategory');
-    }
-    public function EditCategory($CategoryID) {
-        $EditCategory = DB::table('categories')->Where('CategoryID', $CategoryID)->first();
-        return view('Admin.ManageCategory.EditCategory')->with(compact('EditCategory'));
+    public function EditCategory($BlogID) {
+        $EditCategory = DB::table('blogs')->Where('BlogID', $BlogID)->first();
+        return view('Admin.ManageBlog.EditCategory')->with(compact('EditCategory'));
     }
     public function LoadCateParent(Request $request)
     {
         $CateTypeID = $request->get("CateTypeID");
         $ParentCateID = $request->get("ParentCateID");
-        $listCateParent = DB::table('categories')->Where('IsActive', true)->Where('CategoryType', $CateTypeID)->Where('Levels', 1)->get();
+        $listCateParent = DB::table('blogs')->Where('IsActive', true)->Where('CategoryType', $CateTypeID)->Where('Levels', 1)->get();
         $content = "";
         if($ParentCateID == 0)
         {
@@ -43,13 +38,13 @@ class CategoryController extends Controller
 
         foreach ($listCateParent as $key => $value)
         {
-            if ($ParentCateID == $value->CategoryID)
+            if ($ParentCateID == $value->BlogID)
             {
-                $content = $content."<option value ='$value->CategoryID' selected='true'>$value->CategoryName</ option >";
+                $content = $content."<option value ='$value->BlogID' selected='true'>$value->CategoryName</ option >";
             }
             else
             {
-                $content = $content."<option value ='$value->CategoryID' >$value->CategoryName</ option >";
+                $content = $content."<option value ='$value->BlogID' >$value->CategoryName</ option >";
             }
         }
         return array(
@@ -80,7 +75,7 @@ class CategoryController extends Controller
             "Levels" => $level,
             "Alias" => $slug,
         ); 
-        $id = DB::table('categories')->insert($newCategory);
+        $id = DB::table('blogs')->insert($newCategory);
         if($id) {
             toastr()->success('Thêm mới danh mục thành công');
             if($data["CategoryType"] == 1) {
@@ -92,7 +87,7 @@ class CategoryController extends Controller
     }
     public function UpdateCategory(Request $request) {
         $data = $request->all();
-        $CategoryID = $data['CategoryID'];
+        $BlogID = $data['BlogID'];
         $level = 1;
         if($data["ParentCateID"] != 0) {
             $level = 2;
@@ -103,7 +98,7 @@ class CategoryController extends Controller
             return Redirect::back();
         }
         $slug = Str::slug($data["CategoryName"] , "-").'-'.time();
-        $id = DB::table('categories')->Where('CategoryID', $CategoryID)->update([
+        $id = DB::table('blogs')->Where('BlogID', $BlogID)->update([
             "CategoryName" => $data['CategoryName'],
             "Description" => $data['Description'],
             "SeoTitle" => $data['SeoTitle'],
@@ -127,8 +122,8 @@ class CategoryController extends Controller
     public function ChangeStatus(Request $request) {
         $data = $request->all();
         $id = $data['IdToUpdate'];
-        $ItemById = DB::table('categories')->Where('CategoryID', $id)->first();
-        $result = DB::table('categories')->Where('CategoryID', $id)->update([
+        $ItemById = DB::table('blogs')->Where('BlogID', $id)->first();
+        $result = DB::table('blogs')->Where('BlogID', $id)->update([
             'IsActive' => !$ItemById->IsActive
         ]);
         if($result) {
@@ -136,13 +131,13 @@ class CategoryController extends Controller
                 return array(
                     'status' => 0,
                     'currentValue' => false,
-                    'message' => 'Đã ẩn danh mục'
+                    'message' => 'Đã ẩn bài viết'
                 );
             }
             return array(
                 'status' => 0,
                 'currentValue' => true,
-                'message' => 'Đã cho hiển thị danh mục'
+                'message' => 'Đã cho hiển thị bài viết'
             );
         }
         return array(
@@ -153,7 +148,7 @@ class CategoryController extends Controller
     public function DeleteCategory(Request $request) {
         $data = $request->all();
         $id = $data['IdToDelete'];
-        $result = DB::table('categories')->Where('CategoryID', $id)->delete();
+        $result = DB::table('blogs')->Where('BlogID', $id)->delete();
         if($result) {
             return array(
                 'status' => 0,

@@ -348,17 +348,17 @@
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a asp-action="Index" asp-controller="Product" asp-area="Admin">
+                <a  href="{{URL('/admin/list-product')}}">
                     <i class="bi bi-circle"></i><span>Danh sách sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a asp-action="CreateProduct" asp-controller="Product" asp-area="Admin">
+                <a  href="{{URL('/admin/create-product')}}">
                     <i class="bi bi-circle"></i><span>Thêm mới sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a asp-action="GoToTrash" asp-controller="Product" asp-area="Admin">
+                <a  href="{{URL('/admin/list-deleted-product')}}">
                     <i class="bi bi-circle"></i><span>Sản phẩm đã xóa</span>
                 </a>
             </li>
@@ -384,17 +384,17 @@
          </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a asp-action="Index" asp-controller="Post" asp-area="Admin">
+                <a href="{{URL('/admin/list-blog')}}">
                     <i class="bi bi-circle"></i><span>Danh sách bài viết</span>
                 </a>
             </li>
             <li>
-                <a asp-action="CreatePost" asp-controller="Post" asp-area="Admin">
+                <a href="{{URL('/admin/create-blog')}}">
                     <i class="bi bi-circle"></i><span>Thêm mới bài viết</span>
                 </a>
             </li>
             <li>
-                <a asp-action="GoToTrash" asp-controller="Post" asp-area="Admin">
+                <a href="{{URL('/admin/list-deleted-blog')}}">
                     <i class="bi bi-circle"></i><span>Bài viết đã bị xóa</span>
                 </a>
             </li>
