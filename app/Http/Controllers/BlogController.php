@@ -160,4 +160,84 @@ class BlogController extends Controller
             'message' => 'Hệ thống đang bị lỗi'
         );
     }
+    public function ShowDetailBlog($BlogID) {
+        $DetailBlog = DB::table('blogs as b')
+            ->join('categories as c', 'c.CategoryID', '=', 'b.CategoryID')
+            ->Where('BlogID', $BlogID)->first();
+        $ListBlog = DB::table('blogs')->Where('CategoryID', $DetailBlog->CategoryID)->Where('IsDeleted', false)->limit(3)->get();
+        $ListCategory = DB::table('categories')->Where('IsActive', true)->Where('CategoryType', 1)->get();
+        $account = session()->get('account');
+        $UserID = null;
+        if(isset($account['Account'])){
+            $UserID = $account['Account']->UserID;
+        }
+        return view('Client.BlogDetail')->with(compact('DetailBlog', 'ListBlog', 'ListCategory', 'UserID'));
+    }
+    public function GetBlogByCategory($CategoryID) {
+        $Category = DB::table('categories')->Where('CategoryID', $CategoryID)->first();
+        $ListBlog = DB::table('blogs')->Where('CategoryID', $CategoryID)->Where('IsDeleted', false)->get();
+        $ListCategory = DB::table('categories')->Where('IsActive', true)->Where('CategoryType', 1)->get();
+        return view('Client.BlogByCategory')->with(compact('ListBlog', 'ListCategory', 'Category'));
+    }
+    public function AddComment(Request $request) {
+        $data = $request->all();
+        $UserID = $data['userid'];
+        $CommentContent = $data['contentcomment'];
+        $PostID = $data['postid'];
+        $Comment = array(
+            'UserID' => $UserID,
+            'BlogID' => $PostID,
+            'Detail' => $CommentContent,
+            // 'IsActive' => true
+        );
+        $id = DB::table('blogcomments')->insert($Comment);
+        if($id) {
+            return array(
+                'status' => 0,
+                'message' => 'Bình luận thành công'
+            );
+        }
+        return array(
+            'status' => 1,
+            'message' => 'Hệ thống đang bị lỗi'
+        );
+    }
+    public function LoadComment(Request $request) {
+        $postid = $request->get('postid');
+        try
+			{
+				if ($postid == null)
+				{
+					return array(
+						"status" => 2,
+						"message" => "Không tìm thấy bài viết",
+					);
+				}
+				$listCommentByPost = DB::table('blogcomments')
+                    ->join("users", "users.UserID", "=", "blogcomments.UserID")
+                    ->Where("BlogID", $postid)->get();
+				$data = "";
+				foreach ($listCommentByPost as $key => $value)
+				{
+					$data .=  "<div class='comment-item d-flex mt-2'>";
+					$data .=  "<img class='comment-avt' src='http://localhost/bonsaishop/$value->Avatar' />";
+					$data .=  "<div class='comment-content-box'>";
+					$data .=  "<h4 class='comment-name mb-0'>$value->FullName</h4>";
+					$data .=  "<p class='comment-detail mb-0'> $value->Detail </p>";
+					$data .=  "</div> </div>";
+				}
+                return array(
+                    "status" => 0,
+                    "message" => "success",
+                    "content" => $data
+                );
+			}
+			catch (e)
+			{
+				return array(
+                    "status" => 1,
+                    "message" => "Hệ thống đang bị lỗi",
+                );
+			}
+    }
 }

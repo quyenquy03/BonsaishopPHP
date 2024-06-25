@@ -143,4 +143,51 @@ class UserController extends Controller
                return $res;
           }
      }
+     public function DangNhap() {
+          return view('Layout.LoginPage');
+     }
+     public function SignIn(Request $request) {
+          $data = $request->all();
+          $user = DB::table('users')->Where('UserName', $data['UserName'])->Where('Password', md5($data['Password']))->first();
+          if($user) {
+               $account = array(
+                    'IsLogin' => true,
+                    'Account' => $user
+               );
+               session()->put('account', $account);
+               toastr()->success('Login Success');
+               return Redirect('/');
+          } 
+          toastr()->error('Login Fail');
+          return Redirect::back();
+     }
+     public function DangKy() {
+          return view('Layout.RegisterPage');
+     }
+     public function SignUp(Request $request) {
+          $data = $request->all();
+          $newUser =  array(
+               'UserName' => $data['UserName'],
+               'FullName' => $data['FullName'],
+               'Email' => $data['Email'],
+               'Phone' => $data['Phone'],
+               'avatar'=> '/public/images/users/1712140845-images.png',
+               'RoleID' => 2,
+               'IsDeleted' => 0,
+               'IsBlocked' => 0,
+               'Password' => md5($data['Password']),
+          );
+          $id = DB::table('users')->insert($newUser);
+          if($id) {
+               toastr()->success('Đăng ký tài khoản thành công');
+               return Redirect('/tai-khoan/dang-nhap');
+          }
+          toastr()->error('Đăng ký thất bại, vui lòng kiểm tra thông tin');
+          return Redirect::back();
+     }
+     public function Logout() {
+          session()->forget('account');
+          toastr()->success('Logout Success');
+          return Redirect('/tai-khoan/dang-nhap');
+     }
 }

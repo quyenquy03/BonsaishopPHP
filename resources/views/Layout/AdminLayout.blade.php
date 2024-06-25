@@ -46,7 +46,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
         <input value="{{csrf_token()}}" hidden name="token" id="token" />
         <div class="d-flex align-items-center text-center justify-content-between">
-            <a href="/" class="logo d-block align-items-center">
+            <a href="{{URL("/")}}" class="logo d-block align-items-center">
                 <img src="https://logos.textgiraffe.com/logos/logo-name/Admin-designstyle-popstar-m.png" alt="">
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>

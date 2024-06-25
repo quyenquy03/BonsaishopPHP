@@ -193,7 +193,6 @@
             });
             $(".ChangeActiveStatusButton").on("click", function () {
                 var IdToUpdate = $(this).data("productid");
-                alert(IdToUpdate)
                 $.ajax({
                     url: "{{URL('/admin/change-product-status')}}",
                     type: "GET",

@@ -45,46 +45,27 @@
 		</header>
 	</div>
 	<div id="BestSellerCarousel" class="row owl-carousel owl-nav-custom owl-theme my-3">
-        <div class="col-12 col-sm-12 col-lg-12 featureCol w-100 position-relative mb-6">
-            <div class="border">
-                <div class="imgHolder position-relative w-100 overflow-hidden">
-                    <img src="{{asset('/public/images/Products/cay-bach-ma-hoang-tu-3317.jpg')}}" alt="image description" class="img-fluid w-100">
-                    <ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
-                        <li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="" class="icon-heart favourite-btn d-block"></a></li>
-                        <li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="" class="addcart-btn icon-cart d-block"></a></li>
-                        <li class="mr-2 overflow-hidden"><a href="/san-pham/" class="icon-eye d-block"></a></li>
-                        <li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
-                    </ul>
-                </div>
-                <div class="text-center py-xl-5 py-sm-4 py-2 px-xl-2 px-1">
-                    <span class="title d-block mb-2 truncate-text truncate-2-line"><a href="/san-pham/@url">Cay back ma</a></span>
-                    <span class="price d-block fwEbold"><del>10000 </del> 10000</span>
-                    <span class="hotOffer green fwEbold text-uppercase text-white position-absolute d-block">Sale</span>
-                </div>
-            </div>
-        </div>
-		{{-- @foreach (var item in ViewBag.ListBestSellerProduct)
-		{
-			var url = Functions.UrlLink(item.ProductName, item.ProductId);
+		@foreach ($BestSellerProduct as $key => $value)
+			{{-- var url = Functions.UrlLink(item.ProductName, item.ProductId); --}}
 			<div class="col-12 col-sm-12 col-lg-12 featureCol w-100 position-relative mb-6">
 				<div class="border">
 					<div class="imgHolder position-relative w-100 overflow-hidden">
-						<img src="{{asset('/public/images/@item.ProductImage" alt="image description" class="img-fluid w-100">
+						<img src="{{asset("/public/images/$value->ProductImage")}}" alt="image description" class="img-fluid w-100">
 						<ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
-							<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="@item.ProductId" class="icon-heart favourite-btn d-block"></a></li>
-							<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="@item.ProductId" class="addcart-btn icon-cart d-block"></a></li>
-							<li class="mr-2 overflow-hidden"><a href="/san-pham/@url" class="icon-eye d-block"></a></li>
+							<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="{{$value->ProductID}}" class="icon-heart favourite-btn d-block"></a></li>
+							<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="{{$value->ProductID}}" class="addcart-btn icon-cart d-block"></a></li>
+							<li class="mr-2 overflow-hidden"><a href="{{URL("/san-pham/$value->ProductID-$value->ProductSlug")}}" class="icon-eye d-block"></a></li>
 							<li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
 						</ul>
 					</div>
 					<div class="text-center py-xl-5 py-sm-4 py-2 px-xl-2 px-1">
-						<span class="title d-block mb-2 truncate-text truncate-2-line"><a href="/san-pham/@url">@item.ProductName</a></span>
-						<span class="price d-block fwEbold"><del>@String.Format("{0:0,0 đ}", item.ProductPrice) </del> @String.Format("{0:0,0 đ}", item.ProductPrice - item.ProductPrice * item.ProductDisCount / 100)</span>
+						<span class="title d-block mb-2 truncate-text truncate-2-line"><a href="/san-pham/@url">{{$value->ProductName}}</a></span>
+						<span class="price d-block fwEbold"><del> {{number_format($value->ProductPrice, 0, '', ',')}} đ</del> {{number_format($value->ProductPrice - $value->ProductPrice * $value->ProductDisCount / 100, 0, '', ',')}} đ</span>
 						<span class="hotOffer green fwEbold text-uppercase text-white position-absolute d-block">Sale</span>
 					</div>
 				</div>
 			</div>
-		} --}}
+		@endforeach
 	</div>
 </section>
 <div class="contactListBlock container overflow-hidden py-5">
@@ -144,46 +125,26 @@
 		</header>
 	</div>
 	<div class="row">
-        <div class="col-12 col-sm-6 col-lg-3 featureCol position-relative mb-6">
-            <div class="border">
-                <div class="imgHolder position-relative w-100 overflow-hidden">
-                    <img src="{{asset('/public/images/Products/cay-bach-ma-hoang-tu-3317.jpg')}}" alt="image description" class="img-fluid w-100">
-                    <ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
-                        <li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="" class="icon-heart favourite-btn d-block"></a></li>
-                        <li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="" class="addcart-btn icon-cart d-block"></a></li>
-                        <li class="mr-2 overflow-hidden"><a href="/san-pham/" class="icon-eye d-block"></a></li>
-                        <li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
-                    </ul>
-                </div>
-                <div class="text-center py-xl-5 py-sm-4 py-2 px-xl-2 px-1">
-                    <span class="title d-block mb-2 truncate-text truncate-2-line"><a href="/san-pham/@url">Cay back ma</a></span>
-                    <span class="price d-block fwEbold"><del>10000 </del> 10000</span>
-                    <span class="hotOffer green fwEbold text-uppercase text-white position-absolute d-block">Sale</span>
-                </div>
-            </div>
-        </div>
-		{{-- @foreach (var item in ViewBag.ListNewProduct)
-		{
-			var url = Functions.UrlLink(item.ProductName, item.ProductId);
+		@foreach ($HotProduct as $key => $value)
 				<div class="col-12 col-sm-6 col-lg-3 featureCol position-relative mb-6">
 					<div class="border">
 						<div class="imgHolder position-relative w-100 overflow-hidden">
-							<img src="{{asset('/public/images/@item.ProductImage" alt="image description" class="img-fluid w-100">
+							<img src="{{asset("/public/images/$value->ProductImage")}}" alt="image description" class="img-fluid w-100">
 							<ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
-							<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="@item.ProductId" class="icon-heart favourite-btn d-block"></a></li>
-								<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="@item.ProductId" class="addcart-btn icon-cart d-block"></a></li>
-								<li class="mr-2 overflow-hidden"><a href="/san-pham/@url" class="icon-eye d-block"></a></li>
+								<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="{{$value->ProductID}}" class="icon-heart favourite-btn d-block"></a></li>
+								<li class="mr-2 overflow-hidden"><a href="javascript:void(0);" data-productid="{{$value->ProductID}}" class="addcart-btn icon-cart d-block"></a></li>
+								<li class="mr-2 overflow-hidden"><a href="{{URL("/san-pham/$value->ProductID-$value->ProductSlug")}}" class="icon-eye d-block"></a></li>
 								<li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
 							</ul>
 						</div>
 						<div class="text-center py-xl-5 py-sm-4 py-2 px-xl-2 px-1">
-							<span class="title d-block mb-2"><a href="/san-pham/@url">@item.ProductName</a></span>
-							<span class="price d-block fwEbold mb-1">@String.Format("{0:0,0 đ}", item.ProductPrice) </span>
-							<span class="hotOffer fwEbold text-uppercase text-white position-absolute d-block">Hot</span>
+							<span class="title d-block mb-2 truncate-text truncate-2-line"><a href="/san-pham/@url">{{$value->ProductName}}</a></span>
+							<span class="price d-block fwEbold"><del> {{number_format($value->ProductPrice, 0, '', ',')}} đ</del> {{number_format($value->ProductPrice - $value->ProductPrice * $value->ProductDisCount / 100, 0, '', ',')}} đ</span>
+							<span class="hotOffer green fwEbold text-uppercase text-white position-absolute d-block">Sale</span>
 						</div>
 					</div>
 				</div>
-		} --}}
+		@endforeach
 	</div>
 </section>
 
@@ -294,7 +255,7 @@
 					<div class="feedback-user">
 						<img class="feedback-user-img" src="{{asset('/public/images/Users/user-6.png')}}" />
 						<div class="feedback-user-info">
-							<h4 class="feedback-user-name">Trần Trọng An</h4>
+							<h4 class="feedback-user-name">Nguyễn Huy Bình</h4>
 							<span class="feedback-user-title">Phó TBT tạp chí điện tử</span>
 						</div>
 					</div>
@@ -319,6 +280,30 @@
 			<p>Những bài viết chia sẻ kiến thức chăm sóc cây cảnh </p>
 		</header>
 	</div>
-
+	<div class="row">
+		@foreach ($HotBlog as $key => $value)
+			@php
+				$url = URL("/bai-viet/$value->BlogID-$value->BlogSlug");
+			@endphp
+			<div class="col-12 col-sm-6 col-lg-4">
+				<div class="newsPostColumn text-center px-2 pb-6 mb-6">
+					<div class="imgHolder position-relative mb-6">
+						<a href="{{$url}}">
+							<img src="{{URL("/public/images/$value->BlogImage")}}" alt="image description" class="img-fluid w-100">
+							<time class="time position-absolute py-3 px-1" datetime="2019-02-03 20:00"> <strong class="fwEbold d-block mb-1">20</strong> Tháng 10</time>
+						</a>
+					</div>
+					<h2 class="headingV fwEbold mb-2 truncate-text truncate-2-line"><a href="{{$url}}">{{$value->BlogName}}</a></h2>
+					<p class="mb-0 truncate-text truncate-3-line">{{$value->BlogDesc}}</p>
+					<div class="d-flex justify-content-between mt-2 px-2">
+						<p class="mb-0">
+							<span><i class="fa fa-eye"></i></span> {{$value->BlogViewCount}} lượt xem
+						</p>
+						<a href="{{$url}}">Xem chi tiết</a>
+					</div>
+				</div>
+			</div>
+		@endforeach
+	</div>
 </section>
 @endsection

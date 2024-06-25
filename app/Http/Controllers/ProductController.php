@@ -160,4 +160,24 @@ class ProductController extends Controller
             'message' => 'Hệ thống đang bị lỗi'
         );
     }
+    public function ShowDetailProduct($ProductID, $ProdcutSlug) {
+        $ProductByID = DB::table('products')->Where('ProductID', $ProductID)->first();
+        $ListProduct = DB::table('products')->Where('IsDeleted', false)->Where('CategoryId', $ProductByID->CategoryId)->limit(4)->get();
+        $ListCategory = DB::table('categories')->Where('IsActive', 1)->Where('CategoryType', 2)->get();
+        return view('Client.ProductDetail')->with(compact('ProductByID', 'ListProduct', 'ListCategory'));
+    }
+    public function GetProductByCategory(Request $request, $CategoryID, $Alias) {
+        $CategoryName = "Tất cả sản phẩm";
+        $CategoryByID = DB::table('categories')->Where('CategoryID', $CategoryID)->first();
+        if($CategoryByID) {
+            $CategoryName = $CategoryByID->CategoryName;
+        }
+        $ListProduct = DB::table('products')->Where('IsDeleted', false)->limit(9)->get();
+        if($CategoryID != 0) {
+            $ListProduct = DB::table('products')->Where('IsDeleted', false)->Where('CategoryId', $CategoryID)->limit(9)->get();
+        }
+        $ListCategory = DB::table('categories')->Where('IsActive', 1)->Where('CategoryType', 2)->get();
+        return view('Client.ProductByCategory')->with(compact('ListProduct', 'ListCategory', 'CategoryName'));
+    }
 }
+// 
